@@ -58,6 +58,11 @@
       padding-top: 0.5rem;
     }
   }
+
+  .header {
+    background-color: {{ section.settings.custom_background_color }};
+  }
+  
 </style>
 
 <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
@@ -78,8 +83,8 @@
 {%- case block.type -%}
   {%- when 'standard_heading' -%}
 
-<{% if block.settings.enable_sticky_header %}sticky-header{% else %}div{% endif %} class="header-wrapper{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}">
-<header class="header header--{{ block.settings.logo_position }} page-width{% if block.settings.menu != blank %} header--has-menu{% endif %}">
+<{% if section.settings.enable_sticky_header %}sticky-header{% else %}div{% endif %} class="header-wrapper{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}">
+<header class="header header--{{ section.settings.logo_position }} page-width{% if section.settings.menu != blank %} header--has-menu{% endif %}">
   {%- if block.settings.menu != blank -%}
     <header-drawer data-breakpoint="tablet">
       <details class="menu-drawer-container">
@@ -429,9 +434,7 @@
 </{% if section.settings.enable_sticky_header %}sticky-header{% else %}div{% endif %}>
  
   {%- when 'custom_heading' -%}
-  <header>
-    <p>This is the fancy header</p>
-  </header>
+  {%- render 'custom_heading' -%}
 {%- endcase -%}
 {%- endfor -%}
 </div>
@@ -575,78 +578,25 @@
   {
     "type": "standard_heading",
     "name": "Standard Heading",
-    "limit": 1,
-    "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Custom heading text"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "t:sections.header.settings.logo.label"
-    },
-    {
-      "type": "range",
-      "id": "logo_width",
-      "min": 50,
-      "max": 250,
-      "step": 10,
-      "default": 100,
-      "unit": "t:sections.header.settings.logo_width.unit",
-      "label": "t:sections.header.settings.logo_width.label"
-    },
-    {
-      "type": "select",
-      "id": "logo_position",
-      "options": [
-        {
-          "value": "middle-left",
-          "label": "t:sections.header.settings.logo_position.options__1.label"
-        },
-        {
-          "value": "top-left",
-          "label": "t:sections.header.settings.logo_position.options__2.label"
-        },
-        {
-          "value": "top-center",
-          "label": "t:sections.header.settings.logo_position.options__3.label"
-        }
-      ],
-      "default": "middle-left",
-      "label": "t:sections.header.settings.logo_position.label"
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "default": "main-menu",
-      "label": "t:sections.header.settings.menu.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_line_separator",
-      "default": true,
-      "label": "t:sections.header.settings.show_line_separator.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_sticky_header",
-      "default": true,
-      "label": "t:sections.header.settings.enable_sticky_header.label",
-      "info": "t:sections.header.settings.enable_sticky_header.info"
-    }
-    ]
+    "limit": 1
   },
   {
     "type": "custom_heading",
     "name": "Custom Heading",
-    "limit": 1,
-    "settings": [
+    "limit": 1
+  }
+  ],
+  "settings": [
     {
       "type": "text",
       "id": "heading",
       "label": "Custom heading text"
+    },
+    {
+      "type": "color",
+      "id": "custom_background_color",
+      "label": "Custom background color",
+      "default": "transparent"
     },
     {
       "type": "image_picker",
@@ -703,7 +653,5 @@
       "info": "t:sections.header.settings.enable_sticky_header.info"
     }
     ]
-  }
-  ]
 }
 {% endschema %}
